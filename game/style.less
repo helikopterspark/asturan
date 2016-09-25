@@ -1,0 +1,544 @@
+/** --------------------------------------------------------------
+ * Typography settings for a default rythm.
+ *
+ */
+//@import url(https://fonts.googleapis.com/css?family=Orbitron);
+//@import url(http://fonts.googleapis.com/css?family=Roboto);
+//@import url(https://fonts.googleapis.com/css?family=Share+Tech+Mono);
+
+@font-face {
+    font-family: 'Orbitron';
+    src: url('../fonts/Orbitron/Orbitron-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Roboto';
+    src: url('../fonts/Roboto/Roboto-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Share Tech Mono';
+    src: url('../fonts/Share_Tech_Mono/ShareTechMono-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+canvas {
+    display: block;
+}
+
+body {
+    background: #000;
+}
+
+#gameCanvas {
+    border: 1px solid #000;
+}
+
+#loadHeading {
+    margin-top: 10px;
+    text-align: center;
+}
+
+#gameHeading1, #gameHeading2, #gameHeading3, #mpLobbyHeading, #mpChatHeading, #mpChatHeadingWebRTC, #loadHeading, #introHeading {
+    font-family: Orbitron;
+    color: #fff;
+    font-size: 32px;
+
+    // Neon glow effect
+    text-shadow: 0 0 10px #fff,
+        0 0 20px #fff,
+        0 0 30px #fff,
+        0 0 40px #0066CC,
+        0 0 70px #0066CC,
+        0 0 80px #0066CC;
+        //0 0 100px #0066CC,
+        //0 0 150px #0066CC;
+}
+
+#gameMessageHeading, #connectHeading {
+    font-family: Orbitron;
+    color: #fff;
+    font-size: 24px;
+        
+    text-shadow: 0 0 10px #fff,
+        0 0 20px #fff,
+        0 0 30px #0066CC,
+        0 0 40px #0066CC;
+}
+
+#gameInstructionColumn1, #gameInstructionColumn2, #gameInstructionColumn3 {
+    display: inline-block;
+    margin-top: 2em;
+    padding: 0 !important;
+    p {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+}
+
+#gameInstructionColumn1 {
+    text-align: right;
+}
+
+#gameInstructionColumn2 {
+    width: 1em;
+    text-align: center;
+}
+
+#gameInstructionColumn3 {
+    text-align: left;
+}
+
+p, label, option {
+    font-family: 'Share Tech Mono';
+    color: white;
+
+    text-shadow: 0 0 10px #fff,
+        0 0 20px #fff,
+        0 0 30px #0066CC,
+        0 0 40px #0066CC;
+}
+
+input[type='text'], #chatlog, #chatlogWebRTC {
+    border: 5px solid #566677;
+    border-radius: 5px 5px;
+    padding:2px;
+    margin: 5px;
+    width: 3.0em;
+    background: transparent;
+    color: rgb(221, 153, 39);
+    font-size: 16px;
+    text-align: center;
+}
+
+input[type='text']:focus {
+        outline-style: none;
+        box-shadow: 0 0 10px #fff,
+            0 0 20px #0066CC;
+            //0 0 30px #0066CC;
+    }
+input[type='range'] {
+    width: 100px;
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 5px;
+  cursor: pointer;
+  background: #566677;
+}
+
+input[type=range]:focus::-webkit-slider-runnable-track {
+  background: #566677;
+}
+
+input[type=range]::-moz-range-track {
+  width: 100%;
+  height: 5px;
+  cursor: pointer;
+  background: #566677;
+}
+
+input[type="range"]::-ms-track {
+    height: 5px;
+    background-color: #566677;
+}
+
+input[type='range']::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    background-color: #ecf0f1;
+    border: 1px solid #566677;
+    width: 10px;
+    height: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    position: relative;
+    top: -5px;
+
+    box-shadow: 0 0 10px #fff,
+            0 0 20px #fff,
+            0 0 30px #0066CC;    
+}
+
+input[type=range]::-moz-range-thumb {
+    background: #ecf0f1;
+    border: 1px solid #566677;
+    width: 10px;
+    height: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+
+    box-shadow: 0 0 10px #fff,
+            0 0 20px #fff,
+            0 0 30px #0066CC;
+}
+
+input[type="range"]::-ms-thumb {
+    background-color: #ecf0f1;
+    border: 1px solid #566677;
+    width: 10px;
+    height: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+
+    box-shadow: 0 0 10px #fff,
+            0 0 20px #fff,
+            0 0 30px #0066CC;
+}
+
+.volume_header, .volume_slider {
+    display: inline-block;
+    margin-top: 20px;
+    width: 165px;
+    text-align: center;
+    p {
+        font-family: Orbitron;
+        font-size: 16px;
+
+        text-shadow: 0 0 10px #fff,
+            0 0 20px #fff,
+            0 0 30px #0066CC;
+            //0 0 40px #0066CC;
+    }
+}
+
+.volume1 {
+    font-family: 'Share Tech Mono';
+    color: rgb(221, 153, 39);
+    border: 1px solid #444;
+    padding: 3px;
+    padding-right: 5px;
+    margin-left: 1px;
+    min-width: 2em;
+
+    text-shadow: none;
+}
+
+#creditlink {
+    float: right;
+    text-align: right;
+    margin-top: 10px;
+    font-size: 12px;
+    p {
+        color: #444;
+        text-shadow: none;
+    }
+    a {
+        color: #777;
+    }
+}
+
+ul {
+    font-family: Orbitron;
+    color: white;
+    list-style-type: none;
+    margin-top: 1em;
+
+    text-shadow: 0 0 10px #fff,
+            0 0 20px #fff,
+            0 0 30px #0066CC;
+}
+
+li {
+    font-family: 'Share Tech Mono';
+    margin-top: 0.5em;
+}
+
+.acronym, .middle, .listscore {
+    display: inline-block;
+}
+
+.acronym {
+    text-align: right;
+    width: 40%
+}
+
+.middle {
+    text-align: center;
+    width: 20%;
+}
+
+.listscore {
+    text-align: left;
+    width: 40%;
+}
+
+a {
+    color: #fff;
+    text-decoration: none;
+}
+
+#resetGame:hover {
+    color: #fff;
+    text-decoration: underline;
+}
+
+a.button {
+    font-family: 'Roboto';
+    background: #185da8;
+    border-radius: 5px;
+    display: inline-block;
+    font-size: 30px;
+    margin: auto;
+    margin-top: 20px;
+    padding: 10px;
+    width: 200px;
+    text-align: center;
+
+    color: hsla(0,0%,20%,1);
+    text-shadow: hsla(0,0%,40%,.5) 0 -1px 0, hsla(0,0%,100%,.6) 0 2px 1px;
+
+    background-color: hsl(0,0%,90%);
+
+  box-shadow: inset hsla(0,0%,15%,  1) 0  0px 0px 4px, /* border */
+    inset hsla(0,0%,15%, .8) 0 -1px 5px 4px, /* soft SD */
+    inset hsla(0,0%,0%, .25) 0 -1px 0px 7px, /* bottom SD */
+    inset hsla(0,0%,100%,.7) 0  2px 1px 7px, /* top HL */
+    
+    hsla(0,0%, 0%,.15) 0 -5px 6px 4px, /* outer SD */
+    hsla(0,0%,10%,.5) 0  5px 6px 4px; /* outer HL */ 
+
+    transition: color .2s;
+
+    border-radius: .2em;
+    background-image: -webkit-repeating-linear-gradient(left, hsla(0,0%,100%,0) 0%, hsla(0,0%,100%,0)   6%, hsla(0,0%,100%, .1) 7.5%),
+    -webkit-repeating-linear-gradient(left, hsla(0,0%,  0%,0) 0%, hsla(0,0%,  0%,0)   4%, hsla(0,0%,  0%,.03) 4.5%),
+    -webkit-repeating-linear-gradient(left, hsla(0,0%,100%,0) 0%, hsla(0,0%,100%,0) 1.2%, hsla(0,0%,100%,.15) 2.2%),
+    
+    linear-gradient(180deg, hsl(0,0%,78%)  0%, 
+        hsl(0,0%,90%) 47%, 
+        hsl(0,0%,78%) 53%,
+        hsl(0,0%,70%)100%);
+}
+
+a.button:hover {
+    color: hsl(210, 100%, 40%);
+    text-shadow: hsla(210,100%,20%,.3) 0 -1px 0, hsl(210,100%,85%) 0 2px 1px, hsla(200,100%,80%,1) 0 0 5px, hsla(210,100%,50%,.6) 0 0 20px;
+    
+    box-shadow: 
+    inset hsla(210,100%,30%,  1) 0  0px 0px 4px, /* border */
+    inset hsla(210,100%,15%, .4) 0 -1px 5px 4px, /* soft SD */
+    inset hsla(210,100%,20%,.25) 0 -1px 0px 7px, /* bottom SD */
+    inset hsla(210,100%,100%,.7) 0  2px 1px 7px, /* top HL */
+    
+    hsla(210,100%,75%, .8) 0 -3px 3px 2px, /* outer SD */
+    hsla(210,50%,40%, .25) 0 0 3px 2px, /* outer SD */
+    hsla(210,100%,75%, .8) 0  3px 3px 2px; /* outer HL */
+
+    text-decoration: none;
+}
+
+#aflash{margin:2em auto;min-height:10em;padding:1em;}
+#aflash{margin: auto;width: 1200px;height: 1024px;}
+
+#game {
+    height: 600px;
+    left: 50%;
+    margin: auto 0;
+    top: 50%;
+    width: 1200px;
+    p {
+        margin: 0 20px;
+    }
+}
+
+#gameUI {
+    height: 600px;
+    position: absolute; /* UI on top of canvas */
+    width: 1200px;
+    border: 1px solid #444;
+}
+
+#gameIntro, #gameComplete, #mpGameComplete, #multiplayerlobbyscreen, #chat, #chatWebRTC, #connectingDataChannel {
+    margin: auto 0;
+    margin-top: 100px;
+    padding: 40px 0;
+    text-align: center;
+}
+
+#connecting {
+    position: absolute;
+    top: 380px;
+    left: 590px;
+    width: 250px;
+    text-align: center;
+}
+
+#multiplayerlobbyscreen {
+    width: 1200px;
+}
+
+#lobbyMessage {
+    position: absolute;
+    display: block;
+    top: 110px;
+    left: 40px;
+    margin-top: 100px;
+    text-align: center;
+}
+
+#multiplayergameslist {
+    -webkit-appearance: none; 
+    -moz-appearance: none;
+    appearance: none;
+
+    margin-top: 20px;
+    padding: 4px;
+    padding-left: 8px;
+    width: 400px;
+    background: transparent;
+    border: 5px solid #566677;
+    border-radius: 5px 5px;
+    
+    font-family: 'Share Tech Mono';
+    color: rgb(221, 153, 39);
+    text-shadow: 0 0 10px #fff,
+            0 0 20px #fff,
+            0 0 30px #0066CC;
+    
+    font-size: 16px;
+}
+
+#multiplayergameslist:focus {
+    outline: none;
+}
+
+#chat, #chatWebRTC {
+    position: absolute;
+    display: block;
+    top: 0px;
+    left: 870px;
+}
+
+#chatlog, #chatlogWebRTC {
+    width: 254px;
+    height: 190px;
+    text-align: left;
+    margin-top: 20px;
+    padding: 4px;
+    padding-left: 8px;
+    font-size: 12px;
+    overflow-y:auto;
+
+    ul, li {
+        margin: 0;
+        padding: 0;
+    }
+}
+
+#chatmessage, #chatmessageWebRTC {
+    width: 262px;
+    font-size: 12px;
+    text-align: left;
+}
+
+#gameMessage {
+    margin: auto 0;
+    margin-top: 100px;
+    padding: 40px 0;
+    text-align: center;
+}
+
+#gameStats {
+    font-size: 14px;
+    margin: 20px 0;
+}
+
+#gameStats #acronym {
+    margin: 20px 20px 0 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+#charger {
+    top: 20px;
+    left: 540px;
+    position: absolute;
+}
+
+.flash {
+  -moz-animation: flash 1s ease-out;
+  -moz-animation-iteration-count: infinite;
+
+  -webkit-animation: flash 1s ease-out;
+  -webkit-animation-iteration-count: infinite;
+
+  -ms-animation: flash 1s ease-out;
+  -ms-animation-iteration-count: infinite;
+}
+
+.flash2 {
+  -moz-animation: flash 2s ease-out;
+  -moz-animation-iteration-count: infinite;
+
+  -webkit-animation: flash 2s ease-out;
+  -webkit-animation-iteration-count: infinite;
+
+  -ms-animation: flash 2s ease-out;
+  -ms-animation-iteration-count: infinite;
+}
+
+@-webkit-keyframes flash {
+    0% { color: #fff; 
+        text-shadow: 0 0 10px #fff,
+            0 0 20px #fff,
+            0 0 30px #0066CC;
+    }
+    25% { color: none;}
+    50% { color: #444;
+        text-shadow: none;
+    }
+    75% { color: none; }
+    100% { color: #fff;
+        text-shadow: 0 0 10px #fff,
+            0 0 20px #fff,
+            0 0 30px #0066CC;
+    }
+}
+
+@-moz-keyframes flash {
+    0% { color: #fff; 
+        text-shadow: 0 0 10px #fff,
+            0 0 20px #fff,
+            0 0 30px #0066CC;
+    }
+    25% { color: none;}
+    50% { color: #444;
+        text-shadow: none;
+    }
+    75% { color: none; }
+    100% { color: #fff;
+        text-shadow: 0 0 10px #fff,
+            0 0 20px #fff,
+            0 0 30px #0066CC;
+    }
+}
+
+@-ms-keyframes flash {
+    0% { color: #fff; 
+        text-shadow: 0 0 10px #fff,
+            0 0 20px #fff,
+            0 0 30px #0066CC;
+    }
+    25% { color: none;}
+    50% { color: #444;
+        text-shadow: none;
+    }
+    75% { color: none; }
+    100% { color: #fff;
+        text-shadow: 0 0 10px #fff,
+            0 0 20px #fff,
+            0 0 30px #0066CC;
+    }
+}

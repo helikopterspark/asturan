@@ -1,0 +1,14 @@
+{
+  "name": "mp_asteroids",
+  "version": "1.0.0",
+  "description": "multiplayer_shootemup",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Carl Ramsell",
+  "license": "MIT",
+  "dependencies": {
+    "websocket": "1.0.23"
+  }
+}
