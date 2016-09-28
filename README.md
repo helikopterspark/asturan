@@ -1,9 +1,13 @@
 The Asteroids Near Uranus
 =========================
 
-A simple side-scrolling shoot-em-up game made in HTML5 for the Javascript course (DV1483) at Blekinge Tekniska Högskola. Fly through the asteroid field and avoid crashing into the rocks. Use the laser cannons to blast away rocks in front of your ship.
+A simple side-scrolling shoot-em-up game made in HTML5 Canvas for the Javascript course (DV1483) at Blekinge Tekniska Högskola. Fly through the asteroid field and avoid crashing into the rocks. Use the laser cannons to blast away rocks in front of your ship.
 
-The multiplayer version requires a Node.js-server and browsers with support for WebSockets and WebRTC.
+The WebAudio API is used for sound and gives much improved performance over using the ``<audio>``-tag.
+
+The multiplayer version requires a Node.js-server and browsers with support for WebSockets and WebRTC. The WebSockets server is used for signaling and the WebRTC data channel is used for peer-to-peer gaming.
+
+The multiplayer part is very much WIP. The game lobby and the WebRTC connection is working well. However, the sync is rudimentary and needs improvement. Lots of refactoring is needed to separate multiplayer code from singleplayer code, as this grew out of a singleplayer game. A little bit at a time...
 
 Installation
 -----------
@@ -23,6 +27,8 @@ Set port number the server should listen to in ``server.js``.
 If you want to restrict request origin, do so in the ``connectionIsAllowed()`` function in ``server.js``.
 
 Start the server with ``node server.js``.
+
+Google's STUN server is used as default for the signaling and can be used for demo purposes.
 
 Credits
 -------
