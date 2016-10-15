@@ -8,6 +8,10 @@
   },
   "author": "Carl Ramsell",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/helikopterspark/asturan.git"
+  },
   "dependencies": {
     "websocket": "1.0.23"
   }
