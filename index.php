@@ -183,7 +183,7 @@ img {
 	</div>
 <div id="mpWrap">
 	<div id="infoText">
-		<p>The game is written in JavaScript and PHP to explore the possibilities of HTML5. It makes use of jQuery for manipulating DOM objects, HTML5 canvas for animated graphics and the WebAudio API for sound.</p>
+		<p>The game is written in JavaScript and PHP to explore the possibilities of HTML5 and modern web technologies. It makes use of jQuery for manipulating DOM objects, HTML5 canvas for animated graphics and the WebAudio API for sound.</p>
 		<p>&nbsp;</p>
 		<p>The multiplayer part uses the WebRTC datachannel for peer-to-peer connection and Websockets for the game lobby and signaling between peers (requires a Node.js server).</p>
 		<p>&nbsp;</p>
@@ -193,6 +193,7 @@ img {
 			<li>Deploy the files on your web server</li>
 			<li>Run <code>npm install</code> to install the Websockets module</li>
 			<li>Make the <i>hiscore.json</i> file writable</li>
+			<li>Configure the server settings (full instructions in the README.md-file)</li>
 			<li>Start the Node server with <code>node server.js</code> to enable multiplayer.</li>
 		</ul>
 		<p>Your monitor should preferably be 1200x800 pixels or larger. Turn up the volume and play in your favourite HTML5 capable browser!</p>
