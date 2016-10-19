@@ -191,12 +191,12 @@ img {
 		<ul id="installation">
 			<li>Get the code from <a class="simple_link" href="https://github.com/helikopterspark/asturan">github</a></li>
 			<li>Deploy the files on your web server</li>
-			<li>Run <code>npm install</code> to install the Websockets module</li>
 			<li>Make the <i>hiscore.json</i> file writable</li>
+			<li>Run <code>npm install</code> to install the Websockets module</li>
 			<li>Configure the server settings (full instructions in the README.md-file)</li>
 			<li>Start the Node server with <code>node server.js</code> to enable multiplayer.</li>
 		</ul>
-		<p>Your monitor should preferably be 1200x800 pixels or larger. Turn up the volume and play in your favourite HTML5 capable browser!</p>
+		<p>Your monitor resolution should preferably be 1200x800 pixels or larger. Turn up the volume and play in your favourite HTML5 capable browser!</p>
 		<p>&nbsp;</p>
 		<p>End transmission...&#9608;</p>
 	</div>
