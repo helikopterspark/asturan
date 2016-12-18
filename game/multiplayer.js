@@ -1,3 +1,7 @@
+/* jshint node: true */
+/* jshint -W030 */
+/* global Asteroids, RTCSessionDescription, RTCPeerConnection, RTCIceCandidate */
+
 window.RTCPeerConnection = window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection;
 window.RTCIceCandidate = window.RTCIceCandidate || window.mozRTCIceCandidate || window.webkitRTCIceCandidate;
 window.RTCSessionDescription = window.RTCSessionDescription || window.mozRTCSessionDescription || window.webkitRTCSessionDescription;
@@ -51,7 +55,7 @@ var multiplayer = {
         this.websocket.onopen = function(){            
             console.log("Connected to socket server");
             multiplayer.enterLobby();    
-        }
+        };
 
         this.websocket.onclose = function() {
             console.log('Disconnected from socket server');
@@ -149,7 +153,7 @@ var multiplayer = {
         	e.stopImmediatePropagation();
         	e.preventDefault();
         	multiplayer.join();
-        })
+        });
         
         mpCancel.on('click', function(e) {
         	e.stopImmediatePropagation();
@@ -232,7 +236,7 @@ var multiplayer = {
             	.text(key)
             	.addClass(status[i])
             	.attr("selected", (i + 1) === multiplayer.roomId));
-		};
+		}
 	},
 	join: function() {
     	var selectedRoom = $('#multiplayergameslist').val();
@@ -247,7 +251,7 @@ var multiplayer = {
         	setTimeout(function() {
         		$("#lobbyMessage").hide();
         	}, 3000);
-		};
+		}
 	},
 	cancel: function() {
      	// Leave any existing game room
@@ -303,7 +307,7 @@ var multiplayer = {
             multiplayer.closeAndExit();
         }
 	},
-
+    /*
 	sendCommand: function(commandObject) {
 		multiplayer.sentCommandForTick = true;
 		multiplayer.sendWebSocketMessage({type: "command", uids: uids, details: details, currentTick: multiplayer.currentTick});
@@ -318,7 +322,7 @@ var multiplayer = {
 			if (commands) {
 				for (var i = 0; i < commands.length; i += 1) {
 					Asteroids.processCommand(commands[i].uids, commands[i].details);
-				};
+				}
 			}
 			Asteroids.gameLoop();
 
@@ -331,7 +335,7 @@ var multiplayer = {
 			multiplayer.sentCommandForTick = false;
 		}
 	},
-
+    */
 	// Tell the server that the player has lost
 	loseGame: function() {
     	multiplayer.sendWebSocketMessage({type: "lose_game", roomId: multiplayer.roomId});
@@ -378,7 +382,7 @@ var multiplayer = {
             multiplayer.rtcPeerConn.ondatachannel = function (evt) {
                 multiplayer.dataChannel = evt.channel;
                 multiplayer.dataChannel.onopen = multiplayer.dataChannelStateChanged;
-                multiplayer.dataChannel.onclose = function() {console.log('Datachannel closed'); multiplayer.rtcPeerConn.close(); multiplayer.rtcPeerConn = null};
+                multiplayer.dataChannel.onclose = function() {console.log('Datachannel closed'); multiplayer.rtcPeerConn.close(); multiplayer.rtcPeerConn = null;};
             };
         }
     },
@@ -498,10 +502,10 @@ var multiplayer = {
         multiplayer.averageLatency = 0;
         for (var i = 0; i < multiplayer.latencyTrips.length; i += 1) {
             multiplayer.averageLatency += measurement.roundTrip / 2;
-        };
+        }
         multiplayer.averageLatency = multiplayer.averageLatency / multiplayer.latencyTrips.length;
         multiplayer.tickLag = Math.round(multiplayer.averageLatency * 2 / 100) + 1;
         console.log("Measuring Latency for player. Attempt", multiplayer.latencyTrips.length, "-Average Latency:", multiplayer.averageLatency, "Tick Lag:", multiplayer.tickLag);
     },
     ////////////////////////////////////////////
-}
+};

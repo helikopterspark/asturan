@@ -1,3 +1,7 @@
+/* jshint node: true */
+/* jshint -W030 */
+/* global Key, multiplayer, AudioContext, requestAnimFrame, Asteroids */
+'use strict';
 /**
 * Shim layer, polyfill, for requestAnimationFrame with setTimeout fallback.
 * http://paulirish.com/2011/requestanimationframe-for-smart-animating/
@@ -60,7 +64,6 @@ window.Key = {
 //window.addEventListener('keyup',   function(event) { Key.onKeyup(event);},   false);
 //window.addEventListener('keydown', function(event) { Key.onKeydown(event);}, false);
 
-'use strict';
 
 // All objects are vectors
 function Vector(x, y) {
@@ -92,7 +95,7 @@ Vector.prototype = {
         this.y += vector.y;
         return this;
     },
-}
+};
 
 // The forces around us
 function Forces() {
@@ -103,19 +106,19 @@ Forces.prototype = {
     createAcceleration: function(vector) {
         return function(velocity, td) {
             velocity.iadd(vector.muls(td));
-        }
+        };
     },
 
     createDamping: function(damping) {
         return function(velocity, td) {
             velocity.imuls(damping);
-        }
+        };
     },
 
     createWind: function(vector) {
         return function(velocity, td) {
             velocity.iadd(vector.adds(td));
-        }
+        };
     },
 
     addAcceleration: function(name, vector) {
@@ -137,7 +140,7 @@ Forces.prototype = {
             }
         }
     },
-}
+};
 
 window.Forces = new Forces();
 window.Forces.addAcceleration('gravity', new Vector(0, 9.82));
@@ -158,7 +161,7 @@ var Asteroid = function(canvasWidth, canvasHeight, image) {
 
     this.direction = 180;
     this.speedfactor = 110;
-}
+};
 
 Asteroid.prototype = {
 
@@ -171,7 +174,7 @@ Asteroid.prototype = {
             this.position.y = Math.floor(Math.random( ) * canvasHeight);
             this.vX = -5 - (Math.random() * 5);
             this.ticksPerFrame = Math.abs(this.vX) / 2;
-        };
+        }
 
         ctx.drawImage(
             this.image,
@@ -211,7 +214,7 @@ Asteroid.prototype = {
             return true;
         } else {
             return false;
-        };
+        }
     },
 
     detectCollisionX: function(plr, td) {   // for asteroid against laser shot, x-plane must compensate for timediff
@@ -222,9 +225,9 @@ Asteroid.prototype = {
             return true;
         } else {
             return false;
-        };
+        }
     },
-}
+};
 
 // Player class
 var Player = function(position, image, appearance, velocity, speed, direction, accelerateForce, breakForce, dampForce, chargerate, acronym) {
@@ -264,7 +267,7 @@ Player.prototype = {
 
         if (this.moveRight) {
             this.drawFlame(ctx);
-        };
+        }
 
         this.stayInArea(canvasWidth, canvasHeight);
 
@@ -309,7 +312,7 @@ Player.prototype = {
 
         if (this.moveRight) {
             this.drawFlameX(ctx);
-        };
+        }
 
         this.stayInArea(canvasWidth, canvasHeight);
        
@@ -369,13 +372,13 @@ Player.prototype = {
         ctx.save();
         ctx.translate(this.position.x - this.halfWidth + 5, this.position.y);
 
-       if (this.flameLength == 30) {
+        if (this.flameLength == 30) {
             this.flameLength = 15;
             ctx.fillStyle = "white";
         } else {
             this.flameLength = 30;
             ctx.fillStyle = "#0066CC";
-        };
+        }
 
         ctx.shadowBlur = 20;
         ctx.shadowColor = "white";
@@ -398,7 +401,7 @@ Player.prototype = {
         } else {
             this.flameLength = 30;
             ctx.fillStyle = "red";
-        };
+        }
 
         ctx.shadowBlur = 20;
         ctx.shadowColor = "white";
@@ -456,7 +459,7 @@ Player.prototype = {
             this.position.y = 20 + this.halfHeight;
         } else if (this.position.y + this.halfHeight > canvasHeight - 20) {
             this.position.y = canvasHeight - 20 - this.halfHeight;
-        };
+        }
     },
 
     update: function(td) {
@@ -503,9 +506,9 @@ Player.prototype = {
             return true;
         } else {
             return false;
-        };
+        }
     },
-}
+};
 
 // Laser shot class
 var Laser = function(height, width, position, velocity, direction, color, own) {
@@ -518,7 +521,7 @@ var Laser = function(height, width, position, velocity, direction, color, own) {
     this.speed      = 1200;
     this.color      = color || 0;
     this.own        = own || false;
-}
+};
 
 Laser.prototype = {
     
@@ -582,7 +585,7 @@ var Explosion = function(canvasWidth, canvasHeight, image, size, halo, td) {
     this.numberOfFrames = 70;
 
     this.done = false;
-}
+};
 
 Explosion.prototype = {
     draw: function(ctx, canvasWidth, canvasHeight) {
@@ -590,7 +593,7 @@ Explosion.prototype = {
         var halocolors = ["#9CFF00", "#0066CC", 'white'];
         this.x += this.vX;
 
-        ctx.save()
+        ctx.save();
         ctx.shadowBlur = 15;
         ctx.shadowColor = halocolors[this.halo];
 
@@ -633,13 +636,13 @@ Explosion.prototype = {
             return true;
         }
     },
-}
+};
 
 // Progressbar class, for laser charge
 var Progressbar = function(position) {
     this.position = position;
     this.width = 0;
-}
+};
 
 Progressbar.prototype = {
     draw: function(ctx) {
@@ -660,19 +663,17 @@ Progressbar.prototype = {
     update: function(td, width) {
         this.width = width;
     },
-}
+};
 
 // The grid
 var Grid = function(color) {
     this.color = color || 'rgba(255, 255, 255, 0.5)';
-}
+};
 
 Grid.prototype = {
     draw: function(ctx, cWidth, cHeight, leftCornerPosY, squareSize) {
-        var verticalX = squareSize;
-        var verticalY = leftCornerPosY;
         var horizontalX = squareSize;
-        //var horizontalY = squareSize;
+        var horizontalY = squareSize;
         var halfSquare = Math.floor(squareSize/2) + 1;
 
         var line1 = 'rgba(0, 0, 0, 0.2)';
@@ -731,18 +732,18 @@ Grid.prototype = {
         }
 
         // Vertical lines
-        for (var horizontalX = squareSize; horizontalX < cWidth; horizontalX += squareSize) {
+        for (horizontalX = squareSize; horizontalX < cWidth; horizontalX += squareSize) {
             ctx.moveTo(horizontalX, leftCornerPosY);
             ctx.lineTo(horizontalX, cHeight);
         }
 
         // Short
-        for (var horizontalX = squareSize; horizontalX < cWidth - squareSize; horizontalX += squareSize) {
+        for (horizontalX = squareSize; horizontalX < cWidth - squareSize; horizontalX += squareSize) {
             ctx.moveTo(horizontalX + halfSquare, leftCornerPosY);
             ctx.lineTo(horizontalX + halfSquare, leftCornerPosY + halfSquare);
         }
 
-        for (var horizontalX = squareSize; horizontalX < cWidth - squareSize; horizontalX += squareSize) {
+        for (horizontalX = squareSize; horizontalX < cWidth - squareSize; horizontalX += squareSize) {
             ctx.moveTo(horizontalX + halfSquare, cHeight);
             ctx.lineTo(horizontalX + halfSquare, cHeight - halfSquare);
         }
@@ -751,7 +752,7 @@ Grid.prototype = {
         ctx.closePath();
         ctx.restore();
     }
-}
+};
 
 // Message to display ingame, scrolls down from top and fades out.
 // With extra shadows, which require multiple message objects, one for each shadow.
@@ -762,7 +763,7 @@ var Message = function(messageText) {
     this.opacity = 1.0;
     this.done = false;
     this.wait = 150;
-}
+};
 
 Message.prototype = {
     draw: function(ctx, width, height, index, td) {
@@ -800,14 +801,14 @@ Message.prototype = {
             this.done = true;
         }
     },
-}
+};
 
 // Volume hander to set master volume with keys
 var VolumeHandler = function(mastervolume, slider, numberDisplay) {
     this.volume = mastervolume || 0.5;
     this.slider = slider;
     this.numberDisplay = numberDisplay;
-}
+};
 
 VolumeHandler.prototype = {
     update: function(td) {
@@ -826,11 +827,10 @@ VolumeHandler.prototype = {
             this.numberDisplay.html(this.slider.val());
         }
     },
-}
+};
 
 window.Asteroids = (function() {
     // Canvas dimensions
-    var canvas;
     var context;
     var canvasWidth;
     var canvasHeight;
@@ -855,13 +855,14 @@ window.Asteroids = (function() {
     var numAsteroids;
     var player, playerRemote;
     var multiplayerGame = false;
-    var multiplayerGO = false;
     var lastGameTick;
     var td;
 
     var projectiles = [];
     var explosions = [];
+    var exp;
     var hits;
+    var astIndex = 0;
     var chargerate = 0.125;
     var progressbar;
     var hiscorelist;
@@ -914,7 +915,6 @@ window.Asteroids = (function() {
 
     // Multiplayer
     var mpPlay = $("#mpGamePlay");
-    var mpLobby = $("#multiplayerlobbyscreen");
     var mpComplete = $("#mpGameComplete");
     var lastCommand = null;
     var remoteAcronym = null;
@@ -1005,7 +1005,6 @@ window.Asteroids = (function() {
         } else {
             // Multiplayer
             mpPlay.click(function(e) {
-                var mpCancel = $("#multiplayercancel");
                 e.preventDefault();
                 render();
                 $("#connecting").show();
@@ -1058,10 +1057,10 @@ window.Asteroids = (function() {
                     //console.log("images done");
                     window.dispatchEvent(eventImages);
                 }
-            }
+            };
             return image;
         }
-    }
+    };
 
     //======================================================================================//
     // Audio load, extract, create objects
@@ -1098,7 +1097,7 @@ window.Asteroids = (function() {
                 setVolumes();
                 setMasterVolume();
                 volumeHandler = new VolumeHandler(masterGain, masterVolume, $(".volume1"));
-            }
+            };
             request.send();
         }
 
@@ -1166,10 +1165,10 @@ window.Asteroids = (function() {
                 s.loop = object.loop;
                 s.start(when, offset);
                 object.s = s;
-            }
+            };
             object.stop = function () {
                 if(object.s) object.s.stop(0);
-            }
+            };
         }
 
         function setVolumes() {
@@ -1181,7 +1180,7 @@ window.Asteroids = (function() {
             soundHiscore.volume.gain.value = 0.6;
             soundPowerup.volume.gain.value = 0.99;
         }
-    }
+    };
 
     function setMasterVolume() {
         masterGain.gain.value = masterVolume.val() / 100;
@@ -1206,7 +1205,7 @@ window.Asteroids = (function() {
                 uiMessagePara.html('"' + quotes[randomIntFromInterval(0, quotes.length - 1)] + '"');
                 uiMessage.show();
             } else {
-                Asteroids.startGame();
+                startGame();
             }
         }
     };
@@ -1246,13 +1245,13 @@ window.Asteroids = (function() {
         lastGameTick = 0;
 
         // Setup asteroids etc
-        explosions = new Array();
-        asteroids = new Array();
-        projectiles = new Array();
+        explosions = [];
+        asteroids = [];
+        projectiles = [];
         numAsteroids = 5;
         for (var i = 0; i < numAsteroids; i += 1) {
             asteroids.push(new Asteroid(canvasWidth, canvasHeight, asteroidSprites[randomIntFromInterval(0, 1)]));
-        };
+        }
 
         // For multiplayer
         if (multiplayerGame) {
@@ -1282,7 +1281,7 @@ window.Asteroids = (function() {
             acronym = $("#player_acronym").val().toUpperCase();
             player.acronym = acronym;
         }
-    }
+    };
 
     var startGame = function() {
         console.log("Start game!");
@@ -1330,7 +1329,7 @@ window.Asteroids = (function() {
             timer();
             render();
             //console.log(player.acronym + ': start play');
-        };
+        }
     };
 
     var render = function() {
@@ -1395,19 +1394,19 @@ window.Asteroids = (function() {
             if (message.done) {
                 message = null;
             } else {
-                for (var i = 0; i < 4; i += 1) {
-                    message.draw(context, canvasWidth, canvasHeight, i, td);
+                for (var l = 0; l < 4; l += 1) {
+                    message.draw(context, canvasWidth, canvasHeight, l, td);
                 }
             }       
         }
-    }
+    };
 
     var timer = function() {
         if (playGame) {
             scoreTimeout = setTimeout(function() {
                 uiScore.html(++timescore);
                 // Increase number of asteroids on screen
-                if (timescore % 5 == 0) {
+                if (timescore % 5 === 0) {
                     numAsteroids += 1;
                     if (chargerate < 0.5) {
                         chargerate += 0.0125;
@@ -1415,11 +1414,11 @@ window.Asteroids = (function() {
                     if (!player.lost) {
                         player.score += 10;
                     }
-                };
+                }
                 playerScore.html(player.score);
                 timer();
             }, 1000);
-        };
+        }
     };
 
     var hiscorelisting = function() {
@@ -1472,7 +1471,7 @@ window.Asteroids = (function() {
                 hiscorelist = null;
             }
         });
-    }
+    };
 
     var gameover = function() {
         if (playGame) {
@@ -1539,7 +1538,7 @@ window.Asteroids = (function() {
             soundDeath.play(0, 0.55);
             console.log("Game over");
         }
-    }
+    };
 
     var gameoverMP = function() {
         if (playGame) {
@@ -1576,7 +1575,7 @@ window.Asteroids = (function() {
                 explosions.push(new Explosion(canvasWidth, canvasHeight, explosionSprite, exp, randomIntFromInterval(0, 2), td));
             }
         }
-    }
+    };
 
     var receiveCommand = function(command) {
         if (command) {
@@ -1585,13 +1584,13 @@ window.Asteroids = (function() {
             lastCommand = null;
         }
         //console.log(lastCommand);
-    }
+    };
 
     var receivePosition = function(position) {
         if (playerRemote) {
             playerRemote.position = position;
         }
-    }
+    };
 
     var gameLoop = function() {
         var now = Date.now();
@@ -1600,12 +1599,12 @@ window.Asteroids = (function() {
 
         if (playGame) {
             requestAnimFrame(gameLoop);
-        };
+        }
 
         // Increase number of asteroids on screen
         while (asteroids.length < numAsteroids) {
             asteroids.push(new Asteroid(canvasWidth, canvasHeight, asteroidSprites[randomIntFromInterval(0, 1)]));
-        };
+        }
         // Sync asteroids for multiplayer
         if (multiplayerGame) {
             //console.log(numAsteroids);
@@ -1614,11 +1613,11 @@ window.Asteroids = (function() {
             } else if (!multiplayer.isInitiator && updateCounter === 0) {
                 while (asteroids.length < multiplayer.asteroidsArray) {
                     asteroids.push(new Asteroid(canvasWidth, canvasHeight, asteroidSprites[randomIntFromInterval(0, 1)]));
-                };
+                }
                 while (asteroids.length > multiplayer.asteroidsArray) {
                     asteroids.splice(asteroids.length - 1, 1);
-                };
-                for (var i = 0; i < asteroids.length; i++) {
+                }
+                for (var i = 0; i < asteroids.length; i += 1) {
                     if (multiplayer.asteroidsArray[i]) {
                         asteroids[i].radius = multiplayer.asteroidsArray[i].radius;
                         asteroids[i].ticksPerFrame = multiplayer.asteroidsArray[i].ticksPerFrame;
@@ -1636,7 +1635,7 @@ window.Asteroids = (function() {
             soundThrust.volume.gain.value = 0.7;
         } else {
             soundThrust.volume.gain.value = 0;
-        };
+        }
 
 
         // send commands and position to peer
@@ -1680,7 +1679,7 @@ window.Asteroids = (function() {
         if (playerRemote && playerRemote.fire) {
             soundLaser.play(0, 0);
 
-            for (var m = 0; m < 3; m += 1) {
+            for (var n = 0; n < 3; n += 1) {
                 projectiles.push(new Laser(40, 2, new Vector(playerRemote.position.x - 35, playerRemote.position.y), new Vector(10, 10), playerRemote.direction, playerRemote.appearance));
             }
             playerRemote.fire = false;
@@ -1719,7 +1718,7 @@ window.Asteroids = (function() {
                 }
             }
             // Triple hit
-            if (hits == 3 && gamePlay) {
+            if (hits == 3 && playGame) {
                 hits = 0;
                 player.score += 200;
                 
@@ -1752,16 +1751,16 @@ window.Asteroids = (function() {
 
         // Asteroid collisions
         Loop:
-        for (var i = 0; i < asteroids.length; i += 1) {
-            var exp = asteroids[i];
-            asteroids[i].update(td);
-            if (asteroids[i].detectCollisionXY(player, td) && !player.lost) {
+        for (var o = 0; o < asteroids.length; o += 1) {
+            astIndex = o;
+            exp = asteroids[o];
+            asteroids[o].update(td);
+            if (asteroids[o].detectCollisionXY(player, td) && !player.lost) {
                 if (multiplayerGame && playGame) {
                     gameoverMP();
                 } else {
                     gameover();
                 }
-
                 break Loop;
             }
         }
@@ -1773,7 +1772,7 @@ window.Asteroids = (function() {
                     'vX': 5,
                     'position': new Vector(playerRemote.position.x - playerRemote.halfWidth, playerRemote.position.y - playerRemote.halfHeight)};
             explosions.push(new Explosion(canvasWidth, canvasHeight, explosionSprite, exp, randomIntFromInterval(0, 2), td));
-            asteroids.splice(i, 1);
+            asteroids.splice(astIndex, 1);
             playerRemote = null;
             soundAsteroidBlast.play(0, 0);
         }
@@ -1798,11 +1797,11 @@ window.Asteroids = (function() {
         'setMessage': function(msg) {if (playerRemote) {message = new Message(playerRemote.acronym + " CRASHED AND BURNED!");}},
         'receiveCommand': receiveCommand,
         'receivePosition': receivePosition,
-    }
+    };
 })();
 
 $(function(){
-    'use strict';
+    //'use strict';
     Asteroids.init('gameCanvas');
 
     console.log('Ready to play.');
