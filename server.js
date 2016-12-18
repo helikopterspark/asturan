@@ -1,4 +1,5 @@
-'use strict'
+/* jshint node: true */
+'use strict';
 
 var WebSocketServer = require('websocket').server;
 var http = require('http');
@@ -24,7 +25,7 @@ var players = [];
 var gameRooms = [];
 for (var i = 0; i < 8; i += 1) {
     gameRooms.push({status: "empty", players: [], roomId: i + 1});
-};
+}
 
 wsServer.on('request', function(request) {
     if(!connectionIsAllowed(request)) {
@@ -39,7 +40,7 @@ wsServer.on('request', function(request) {
     // Add the player to the players array
     var player = {
         connection:connection    
-    }
+    };
     players.push(player);
     
     // Send a fresh game room status list the first time player connects
@@ -101,11 +102,11 @@ wsServer.on('request', function(request) {
 	        if (players[i] === player){
 	            players.splice(i, 1);
 	        }
-	    };
+	    }
 
 	    // If the player is in a room, remove him from room and notify everyone
 	    if (player.room) {
-	        var status = player.room.status;
+	        //var status = player.room.status;
 	        var roomId = player.room.roomId;
 	        
 			leaveRoom(player, roomId);
@@ -119,7 +120,7 @@ function sendRoomList(connection) {
     var status = [];
     for (var i = 0; i < gameRooms.length; i += 1) {
         status.push(gameRooms[i].status);
-    };
+    }
     var clientMessage = {type: "room_list", status: status};
     connection.send(JSON.stringify(clientMessage));
 }
@@ -129,12 +130,12 @@ function sendRoomListToEveryone() {
     var status = [];
     for (var i = 0; i < gameRooms.length; i += 1) {
         status.push(gameRooms[i].status);
-    };
+    }
     var clientMessage = {type: "room_list", status: status};
     var clientMessageString = JSON.stringify(clientMessage);
-    for (var i = 0; i < players.length; i += 1) {
-        players[i].connection.send(clientMessageString);
-    };
+    for (var j = 0; j < players.length; j += 1) {
+        players[j].connection.send(clientMessageString);
+    }
 }
 
 function joinRoom(player, roomId) {
@@ -160,12 +161,12 @@ function joinRoom(player, roomId) {
 }
 
 function sendChatMessage(message, from) {
-        var messageString = {type:"chat", message: message, from: from};
-        var broadcastMessage = JSON.stringify(messageString);
-        for (var i = 0; i < players.length; i += 1) {
-            players[i].connection.send(broadcastMessage);
-        };
-    };
+    var messageString = {type:"chat", message: message, from: from};
+    var broadcastMessage = JSON.stringify(messageString);
+    for (var i = 0; i < players.length; i += 1) {
+        players[i].connection.send(broadcastMessage);
+    }
+}
 
 function leaveRoom(player, roomId) {
     var room = gameRooms[roomId - 1];
@@ -175,7 +176,7 @@ function leaveRoom(player, roomId) {
         if (room.players[i] === player){
             room.players.splice(i, 1);
         }
-    };
+    }
     delete player.room;
     // Update room status 
     if (room.players.length === 0) {
@@ -205,7 +206,7 @@ function sendRoomWebSocketMessage(room, messageObject) {
     var messageString = JSON.stringify(messageObject);
     for (var i = room.players.length - 1; i >= 0; i -= 1) {
         room.players[i].connection.send(messageString);
-    }; 
+    }
 }
 
 function sendRoomWebSocketMessageToPeer(room, fromPlayer, messageObject) {
@@ -214,7 +215,7 @@ function sendRoomWebSocketMessageToPeer(room, fromPlayer, messageObject) {
         if (room.players[i].connection !== fromPlayer.connection) {
             room.players[i].connection.send(messageString);
         }
-    }; 
+    }
 }
 
 // Logic to determine whether a specified connection is allowed.
@@ -236,5 +237,5 @@ function connectionIsAllowed(request){
 */
 function htmlEntities(str) {
     return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-};
+}
 
