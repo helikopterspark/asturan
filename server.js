@@ -17,7 +17,7 @@ server.listen(portnumber, function() {
 
 var wsServer = new WebSocketServer({
     httpServer:server,
-    autoAcceptConnections: false        
+    autoAcceptConnections: false
 });
 
 var players = [];
@@ -33,16 +33,16 @@ wsServer.on('request', function(request) {
         console.log('Connection from ' + request.remoteAddress + ' rejected.');
         return;
     }
-    
+
     var connection = request.accept();
     console.log('Connection from ' + request.remoteAddress + ' accepted.');
-    
+
     // Add the player to the players array
     var player = {
-        connection:connection    
+        connection:connection
     };
     players.push(player);
-    
+
     // Send a fresh game room status list the first time player connects
     sendRoomList(connection);
 
@@ -79,7 +79,7 @@ wsServer.on('request', function(request) {
                     break;
                 case "reset_ready":
                     player.room.playersReady = 0;
-                    break;       
+                    break;
 	            case "leave_room":
 	                leaveRoom(player, clientMessage.roomId);
 	                sendRoomListToEveryone();
@@ -90,7 +90,7 @@ wsServer.on('request', function(request) {
 	                if (player.room.playersReady === 2) {
 	                    startGame(player.room);
 	                }
-	                break;                                                    
+	                break;
 	        }
 	    }
 	});
@@ -108,9 +108,9 @@ wsServer.on('request', function(request) {
 	    if (player.room) {
 	        //var status = player.room.status;
 	        var roomId = player.room.roomId;
-	        
+
 			leaveRoom(player, roomId);
-	        sendRoomListToEveryone();            
+	        sendRoomListToEveryone();
 	    }
         sendChatMessage("has left", player.acronym);
 	});
@@ -143,8 +143,8 @@ function joinRoom(player, roomId) {
     console.log("Adding player to room", roomId);
     // Add the player to the room
     room.players.push(player);
-    player.room = room;        
-    // Update room status 
+    player.room = room;
+    // Update room status
     if (room.players.length === 1) {
         room.status = "waiting";
         player.shiptype = "smugglership";
@@ -171,16 +171,16 @@ function sendChatMessage(message, from) {
 function leaveRoom(player, roomId) {
     var room = gameRooms[roomId - 1];
     console.log("Removing player from room", roomId);
-     
+
     for (var i = room.players.length - 1; i >= 0; i -= 1) {
         if (room.players[i] === player){
             room.players.splice(i, 1);
         }
     }
     delete player.room;
-    // Update room status 
+    // Update room status
     if (room.players.length === 0) {
-        room.status = "empty";    
+        room.status = "empty";
     } else if (room.players.length === 1) {
         room.status = "waiting";
     }
@@ -238,4 +238,3 @@ function connectionIsAllowed(request){
 function htmlEntities(str) {
     return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
-

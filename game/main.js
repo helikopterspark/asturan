@@ -297,7 +297,7 @@ Player.prototype = {
         ctx.fillStyle = surfaceGradient;
         ctx.fillRect(this.position.x - this.halfWidth, this.position.y - this.halfHeight, this.position.x + this.width, this.position.y + this.height);
 
-        ctx.restore();        
+        ctx.restore();
 
         this.moveRight = false;
     },
@@ -315,7 +315,7 @@ Player.prototype = {
         }
 
         this.stayInArea(canvasWidth, canvasHeight);
-       
+
         ctx.save();
         ctx.beginPath();
         ctx.moveTo(this.position.x-5, this.position.y - this.halfHeight);
@@ -524,15 +524,15 @@ var Laser = function(height, width, position, velocity, direction, color, own) {
 };
 
 Laser.prototype = {
-    
+
     draw: function(ctx, posX, posY) {
         ctx.save();
 
         ctx.translate(this.position.x, this.position.y);
         ctx.rotate(this.direction+Math.PI/2);
-        
+
         ctx.shadowBlur = 15;
-        
+
         if (this.color === 0) {
             ctx.shadowColor = "#9CFF00";
             ctx.fillStyle = '#9CFF00';
@@ -545,16 +545,16 @@ Laser.prototype = {
 
         ctx.restore();
     },
-    
+
     update: function(td) {
         this.position.x += this.speed * Math.cos(this.direction) * td;
         this.position.y += this.speed * Math.sin(this.direction) * td;
     },
-    
+
     inArea: function(canvasWidth, canvasHeight) {
-        if (this.position.x >= canvasWidth || 
-            this.position.x <= 0 || 
-            this.position.y >= canvasHeight || 
+        if (this.position.x >= canvasWidth ||
+            this.position.x <= 0 ||
+            this.position.y >= canvasHeight ||
             this.position.y <= 0) {
                 return false;
         } else {
@@ -569,7 +569,7 @@ var randomIntFromInterval = function(min, max) {
 
 // Explosion class
 var Explosion = function(canvasWidth, canvasHeight, image, size, halo, td) {
-   
+
     this.radius = size.radius * 1.5;
     this.x = size.position.x;
     this.y = size.position.y;
@@ -627,9 +627,9 @@ Explosion.prototype = {
     },
 
     inArea: function(canvasWidth, canvasHeight) {
-        if (this.x >= canvasWidth || 
-            this.x <= 0 || 
-            this.y >= canvasHeight || 
+        if (this.x >= canvasWidth ||
+            this.x <= 0 ||
+            this.y >= canvasHeight ||
             this.y <= 0) {
                 return false;
         } else {
@@ -687,9 +687,9 @@ Grid.prototype = {
         ctx.fillRect(0, 0, cWidth, cHeight/squareSize);
 
         ctx.restore();
-        
+
         cHeight += 1; // Draw one line beneath area
-       
+
         ctx.save();
         ctx.strokeStyle = line2;
         ctx.lineWidth = 1;
@@ -711,7 +711,7 @@ Grid.prototype = {
         ctx.lineWidth = 1;
         ctx.shadowBlur = 5;
         ctx.shadowColor = "#0066CC";
-        
+
         ctx.beginPath();
 
         // Horizontal lines
@@ -767,7 +767,7 @@ var Message = function(messageText) {
 
 Message.prototype = {
     draw: function(ctx, width, height, index, td) {
-        
+
         var x = width / 2;
         var y = 0 + this.step;
 
@@ -776,13 +776,13 @@ Message.prototype = {
             {color: "rgba(0,102,204," + this.opacity + ")", blur: 10, swidth: width},
             {color: "rgba(0,102,204," + this.opacity + ")", blur: -10, swidth: width},
             {color: "rgba(255,255,255," + this.opacity + ")", blur: 7, swidth: 0}];
-        
+
         ctx.save();
         ctx.translate(x, y);
         ctx.font= this.fontsize + "px Orbitron";
         ctx.textAlign = 'center';
         ctx.textBaseline = "top";
-        ctx.fillStyle = "rgba(255,255,255," + this.opacity + ")"; 
+        ctx.fillStyle = "rgba(255,255,255," + this.opacity + ")";
 
         ctx.shadowColor = shadows[index].color;
         ctx.shadowOffsetX = shadows[index].swidth;
@@ -856,6 +856,7 @@ window.Asteroids = (function() {
     var player, playerRemote;
     var multiplayerGame = false;
     var lastGameTick;
+    var lastAsteroidTick = 0;
     var td;
 
     var projectiles = [];
@@ -919,6 +920,7 @@ window.Asteroids = (function() {
     var lastCommand = null;
     var remoteAcronym = null;
     var updateCounter = 0;
+    var astUpdateCounter = 0;
     var mpToLobby = $("#multiplayerlobby");
     var mpPlayAgain = $("#mpPlayAgain");
     var playerRemoteScore = 0;
@@ -944,7 +946,7 @@ window.Asteroids = (function() {
         asteroidImage2 = imageLoader.load('img/asteroid_sprite2.png');
         explosionSprite = imageLoader.load('img/explosion_sprite2.png');
 
-        
+
         window.addEventListener("audioloaded", function() {
             //console.log("audio listener");
             uiPlayButton.fadeIn();
@@ -1032,7 +1034,7 @@ window.Asteroids = (function() {
     //======================================================================================//
     // Image loader
     //======================================================================================//
-    
+
     var eventImages = new CustomEvent("loadallimages", {
         detail: {
             message: null,
@@ -1041,7 +1043,7 @@ window.Asteroids = (function() {
         bubbles: true,
         cancelable: true
     });
-    
+
     var imageLoader = {
         loaded: true,
         loadedImages: 0,
@@ -1065,7 +1067,7 @@ window.Asteroids = (function() {
     //======================================================================================//
     // Audio load, extract, create objects
     //======================================================================================//
-    
+
     var eventAudio = new CustomEvent("audioloaded", {
         detail: {
             message: null,
@@ -1102,7 +1104,7 @@ window.Asteroids = (function() {
         }
 
         /*
-        Runs through the loaded array buffer and 
+        Runs through the loaded array buffer and
         extract each individual chunk that contains
         each original sound file buffer.
         */
@@ -1151,7 +1153,7 @@ window.Asteroids = (function() {
                 object.buffer = res;
             });
 
-                /* 
+                /*
                 Do something with the sound, for instance, play it.
                 Watch out: all the sounds will sound at the same time!
                 */
@@ -1192,7 +1194,7 @@ window.Asteroids = (function() {
     }
 
     //======================================================================================//
-    
+
     var listener = function(e) {
         if (e.keyCode == 32) {
             uiMessage.hide();
@@ -1209,7 +1211,7 @@ window.Asteroids = (function() {
             }
         }
     };
-    
+
     var initGame = function(title) {
         var sCancel = $("#singleplayercancel");
         render();
@@ -1231,7 +1233,7 @@ window.Asteroids = (function() {
         });
     };
 
-    var resetGame = function() {        
+    var resetGame = function() {
         clearTimeout(scoreTimeout);
 
         playGame = false;
@@ -1243,6 +1245,7 @@ window.Asteroids = (function() {
 
         td = 0;
         lastGameTick = 0;
+        lastAsteroidTick = 0;
 
         // Setup asteroids etc
         explosions = [];
@@ -1271,7 +1274,7 @@ window.Asteroids = (function() {
                 playerRemote = new Player(new Vector(150, 200), spaceshipImage, 0);
             }
             playerRemote.acronym = remoteAcronym;
-            
+
         // Singleplayer
         } else {
             player = new Player(new Vector(150, canvasHeight / 2), spaceshipImage, randomIntFromInterval(0, 1));
@@ -1314,7 +1317,7 @@ window.Asteroids = (function() {
 
             playGame = true;
             goScreen = false;
-            
+
             soundBackground.loop = true;
             soundBackground.play(0, 0);
             soundThrust.loop = true;
@@ -1324,7 +1327,7 @@ window.Asteroids = (function() {
 
             window.addEventListener('keyup',   function(event) { Key.onKeyup(event);},   false);
             window.addEventListener('keydown', function(event) { Key.onKeydown(event);}, false);
-            
+
             gameLoop();
             timer();
             render();
@@ -1374,7 +1377,7 @@ window.Asteroids = (function() {
                 playerRemote.drawX(context, canvasWidth, canvasHeight);
             }
         }
-  
+
         // Laser shots
         for (var k = 0; k < projectiles.length; k += 1) {
             projectiles[k].draw(context, projPos, -50 + k * 2);
@@ -1397,7 +1400,7 @@ window.Asteroids = (function() {
                 for (var l = 0; l < 4; l += 1) {
                     message.draw(context, canvasWidth, canvasHeight, l, td);
                 }
-            }       
+            }
         }
     };
 
@@ -1438,7 +1441,7 @@ window.Asteroids = (function() {
                 hiscorelist = response;
 
                 hiscorelist.push({"acronym": player.acronym, "score": player.score});
-            
+
                 hiscorelist.sort(function(a, b) {
                     return parseInt(b.score) - parseInt(a.score);
                 });
@@ -1490,7 +1493,7 @@ window.Asteroids = (function() {
             clearTimeout(scoreTimeout);
             uiStats.hide();
             progressbar = null;
- 
+
             if (multiplayerGame) {
                 uiEndScore.html(mpEndScore);
                 uiEndTimeScore.html(mpEndTime);
@@ -1592,6 +1595,13 @@ window.Asteroids = (function() {
         }
     };
 
+    // Increase number of asteroids on screen
+    var increaseAsteroidCount = function() {
+        while (asteroids.length < numAsteroids) {
+            asteroids.push(new Asteroid(canvasWidth, canvasHeight, asteroidSprites[randomIntFromInterval(0, 1)]));
+        }
+    }
+
     var gameLoop = function() {
         var now = Date.now();
         td = (now - (lastGameTick || now)) / 1000;  // Timediff since last frame / gametick
@@ -1601,31 +1611,40 @@ window.Asteroids = (function() {
             requestAnimFrame(gameLoop);
         }
 
-        // Increase number of asteroids on screen
-        while (asteroids.length < numAsteroids) {
-            asteroids.push(new Asteroid(canvasWidth, canvasHeight, asteroidSprites[randomIntFromInterval(0, 1)]));
-        }
         // Sync asteroids for multiplayer
         if (multiplayerGame) {
-            //console.log(numAsteroids);
-            if (multiplayer.isInitiator && updateCounter === 0) {
-                multiplayer.sendDataChannelMessage({type: "setup_asteroids", asteroidsArray: asteroids, currentTick: lastGameTick});
-            } else if (!multiplayer.isInitiator && updateCounter === 0) {
-                while (asteroids.length < multiplayer.asteroidsArray) {
+            if (astUpdateCounter === 4) {
+                astUpdateCounter = 0;
+            } else {
+                astUpdateCounter += 1;
+            }
+            if (multiplayer.isInitiator && astUpdateCounter === 0) {
+                increaseAsteroidCount();
+                multiplayer.sendDataChannelMessage({type: "setup_asteroids", asteroidsArray: asteroids, asteroidTick: lastGameTick});
+            } else if (!multiplayer.isInitiator && astUpdateCounter === 0) {
+                while (asteroids.length < multiplayer.asteroidsArray.length) {
                     asteroids.push(new Asteroid(canvasWidth, canvasHeight, asteroidSprites[randomIntFromInterval(0, 1)]));
                 }
-                while (asteroids.length > multiplayer.asteroidsArray) {
+                while (asteroids.length > multiplayer.asteroidsArray.length) {
                     asteroids.splice(asteroids.length - 1, 1);
                 }
-                for (var i = 0; i < asteroids.length; i += 1) {
-                    if (multiplayer.asteroidsArray[i]) {
-                        asteroids[i].radius = multiplayer.asteroidsArray[i].radius;
-                        asteroids[i].ticksPerFrame = multiplayer.asteroidsArray[i].ticksPerFrame;
-                        asteroids[i].position = multiplayer.asteroidsArray[i].position;
-                        asteroids[i].vX = multiplayer.asteroidsArray[i].vX;
+                if (lastAsteroidTick <= multiplayer.asteroidTick) {
+                    for (var i = 0; i < asteroids.length; i += 1) {
+                        if (multiplayer.asteroidsArray[i]) {
+                            asteroids[i].radius = multiplayer.asteroidsArray[i].radius;
+                            asteroids[i].ticksPerFrame = multiplayer.asteroidsArray[i].ticksPerFrame;
+                            asteroids[i].position.y = multiplayer.asteroidsArray[i].position.y;
+                            asteroids[i].position.x = multiplayer.asteroidsArray[i].position.x - multiplayer.averageLatency * asteroids[i].speedfactor;
+                            asteroids[i].vX = multiplayer.asteroidsArray[i].vX;
+                        }
                     }
+                    lastAsteroidTick = multiplayer.asteroidTick;
+                } else {
+                    console.log("Skip unordered package!");
                 }
             }
+        } else {
+            increaseAsteroidCount();
         }
 
         // Player
@@ -1721,7 +1740,7 @@ window.Asteroids = (function() {
             if (hits == 3 && playGame) {
                 hits = 0;
                 player.score += 200;
-                
+
                 message = new Message("TRIPLE HIT +200");
 
                 soundBackground.volume.gain.value = 0.2;

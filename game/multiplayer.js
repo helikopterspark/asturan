@@ -19,6 +19,7 @@ var multiplayer = {
     ready: false,
     peerReady: false,
     asteroidsArray: [],
+    asteroidTick: 0,
 
     //Signaling Code Setup
     isInitiator: false,
@@ -52,9 +53,9 @@ var multiplayer = {
             //multiplayer.endGame("Error connecting to server.");
         };
         // Display multiplayer lobby screen after connecting
-        this.websocket.onopen = function(){            
+        this.websocket.onopen = function(){
             console.log("Connected to socket server");
-            multiplayer.enterLobby();    
+            multiplayer.enterLobby();
         };
 
         this.websocket.onclose = function() {
@@ -87,13 +88,13 @@ var multiplayer = {
                     e.preventDefault();
                     multiplayer.cancel();
                     $("#connectingDataChannel").hide();
-                    multiplayer.enterLobby(); 
+                    multiplayer.enterLobby();
                 });
                 $("#multiplayerlobbyscreen").hide();
                 $("#connectingDataChannel").fadeIn('slow');
                 break;
             case "signal":
-                
+
                 //Setup the RTC Peer Connection object
                 if (!multiplayer.rtcPeerConn) {
                     console.log("setup RTCPeerConnection");
@@ -125,19 +126,19 @@ var multiplayer = {
                     console.log('Add ICS candidate');
                     multiplayer.rtcPeerConn.addIceCandidate(new  RTCIceCandidate(rtc_message.candidate)).catch(multiplayer.onCreateSessionDescriptionError);
                 }
-                
+
                 break;
             case "start_game":
                 multiplayer.startGame();
                 break;
-        }        
+        }
     },
 	enterLobby: function() {
 		var mpJoin = $("#multiplayerjoin");
 		var mpCancel = $("#multiplayercancel");
-		
+
 		$('#connecting').hide();
-		
+
 		if ($("#player_acronym").val()) {
             multiplayer.acronym = $("#player_acronym").val().toUpperCase();
         } else {
@@ -154,7 +155,7 @@ var multiplayer = {
         	e.preventDefault();
         	multiplayer.join();
         });
-        
+
         mpCancel.on('click', function(e) {
         	e.stopImmediatePropagation();
             e.preventDefault();
@@ -278,7 +279,7 @@ var multiplayer = {
 
         multiplayer.websocket.onopen = null;
         multiplayer.websocket.onclose = null;
-        multiplayer.websocket.onerror = null;       
+        multiplayer.websocket.onerror = null;
         multiplayer.websocket.close();
         console.log('Disconnected from socket server');
 
@@ -300,7 +301,7 @@ var multiplayer = {
 	startGame: function(messageObject) {
 		//multiplayer.animationInterval = setInterval(multiplayer.tickLoop, game.animationTimeout);
         if (multiplayer.dataChannel && multiplayer.dataChannel.readyState === 'open') {    // in case other side disconnects
-		  Asteroids.startGame();
+            Asteroids.startGame();
         } else {
             // Other side has disconnected so go straight back to title screen
             $("#gameMessage").hide();
@@ -349,7 +350,7 @@ var multiplayer = {
     ////////////////////////////////////////////////
     /// WebRTC functions
     ////////////////////////////////////////////////
-    
+
     // call start(true) to initiate
     startSignal: function(isInitiator) {
         multiplayer.rtcPeerConn = new RTCPeerConnection(multiplayer.configuration);
@@ -453,6 +454,7 @@ var multiplayer = {
                 break;
             case "setup_asteroids":
                 multiplayer.asteroidsArray = messageObject.asteroidsArray;
+                multiplayer.asteroidTick = messageObject.asteroidTick;
                 //console.log(multiplayer.asteroidsArray);
                 break;
             case "position":
