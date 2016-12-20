@@ -460,7 +460,6 @@ var multiplayer = {
             case "setup_asteroids":
                 multiplayer.asteroidsArray = messageObject.asteroidsArray;
                 multiplayer.asteroidTick = messageObject.asteroidTick;
-                //console.log(multiplayer.asteroidsArray);
                 break;
             case "position":
                 Asteroids.receivePosition(messageObject.position);

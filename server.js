@@ -39,7 +39,8 @@ wsServer.on('request', function(request) {
 
     // Add the player to the players array
     var player = {
-        connection:connection
+        connection:connection,
+        ready: false
     };
     players.push(player);
 
@@ -72,24 +73,21 @@ wsServer.on('request', function(request) {
                     sendRoomWebSocketMessageToPeer(player.room, player, clientMessage);
                     break;
                 case "ready":
-                    player.room.playersReady += 1;
-                    if (player.room.playersReady === 2) {
+                    if (!player.ready) {
+                        console.log("Player " + player.acronym + " ready");
+                    }
+                    player.ready = true;
+                    if (checkReady(player.room)) {
                         startGame(player.room);
                     }
                     break;
                 case "reset_ready":
-                    player.room.playersReady = 0;
+                    player.ready = false;
                     break;
 	            case "leave_room":
 	                leaveRoom(player, clientMessage.roomId);
 	                sendRoomListToEveryone();
                     sendChatMessage("left Sector " + clientMessage.roomId, player.acronym);
-	                break;
-	            case "initialized_level":
-	                player.room.playersReady += 1;
-	                if (player.room.playersReady === 2) {
-	                    startGame(player.room);
-	                }
 	                break;
 	        }
 	    }
@@ -108,13 +106,22 @@ wsServer.on('request', function(request) {
 	    if (player.room) {
 	        //var status = player.room.status;
 	        var roomId = player.room.roomId;
-
 			leaveRoom(player, roomId);
 	        sendRoomListToEveryone();
 	    }
         sendChatMessage("has left", player.acronym);
 	});
 });
+
+function checkReady(room) {
+    var ready = true;
+    for (var i = 0; i < room.players.length; i += 1) {
+        if (room.players[i].ready == false) {
+            ready = false;
+        }
+    }
+    return ready;
+}
 
 function sendRoomList(connection) {
     var status = [];

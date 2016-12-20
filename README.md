@@ -7,7 +7,7 @@ The WebAudio API is used for sound and gives much improved performance over usin
 
 The multiplayer version requires a Node.js-server and browsers with support for WebSockets and WebRTC. The WebSockets server is used for signaling and the WebRTC data channel is used for peer-to-peer gaming.
 
-The multiplayer part is very much WIP. The game lobby and the WebRTC connection is working well. However, the sync is rudimentary and needs improvement. Lots of refactoring is needed to separate multiplayer code from singleplayer code, as this grew out of a singleplayer game. A little bit at a time...
+The multiplayer part is very much WIP. The game lobby and the WebRTC connection is working well. However, the sync is rudimentary and needs improvement. Lots of refactoring is needed to separate multiplayer code from singleplayer code, as this grew out of a singleplayer game.
 
 Installation
 -----------
@@ -20,9 +20,9 @@ For multiplayer:
 
 Use ``npm install`` to install the dependency (theturtle32/WebSocket-Node).
 
-Set the server name and port number for ``websocket_url`` in ``multiplayer.js``.
-
 Set port number the server should listen to in ``server.js``.
+
+Set the server name and port number for ``websocket_url`` in ``multiplayer.js``.
 
 If you want to restrict request origin, do so in the ``connectionIsAllowed()`` function in ``server.js``.
 

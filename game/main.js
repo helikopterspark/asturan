@@ -1497,6 +1497,7 @@ window.Asteroids = (function() {
             progressbar = null;
 
             if (multiplayerGame) {
+                multiplayer.sendWebSocketMessage({type: "reset_ready"});
                 uiEndScore.html(mpEndScore);
                 uiEndTimeScore.html(mpEndTime);
                 $('.remotePlayer').html(remoteAcronym);
@@ -1512,7 +1513,6 @@ window.Asteroids = (function() {
                     e.stopImmediatePropagation();
                     e.preventDefault();
                     mpComplete.hide();
-                    multiplayer.sendWebSocketMessage({type: "reset_ready"});
                     multiplayer.initMPGameOnOpenDataChannel();
                 });
 
