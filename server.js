@@ -104,7 +104,6 @@ wsServer.on('request', function(request) {
 
 	    // If the player is in a room, remove him from room and notify everyone
 	    if (player.room) {
-	        //var status = player.room.status;
 	        var roomId = player.room.roomId;
 			leaveRoom(player, roomId);
 	        sendRoomListToEveryone();
@@ -116,7 +115,7 @@ wsServer.on('request', function(request) {
 function checkReady(room) {
     var ready = true;
     for (var i = 0; i < room.players.length; i += 1) {
-        if (room.players[i].ready == false) {
+        if (room.players[i].ready === false) {
             ready = false;
         }
     }

@@ -445,6 +445,7 @@ var multiplayer = {
                 break;
             case "latency_result":
                 multiplayer.latencyResult = messageObject.latency;
+                break;
             case "ready":
                 multiplayer.peerReady = true;
                 if(multiplayer.isInitiator && multiplayer.ready) {
