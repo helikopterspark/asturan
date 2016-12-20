@@ -161,6 +161,7 @@ var Asteroid = function(canvasWidth, canvasHeight, image) {
 
     this.direction = 180;
     this.speedfactor = 110;
+    this.invisible = true;
 };
 
 Asteroid.prototype = {
@@ -174,6 +175,7 @@ Asteroid.prototype = {
             this.position.y = Math.floor(Math.random( ) * canvasHeight);
             this.vX = -5 - (Math.random() * 5);
             this.ticksPerFrame = Math.abs(this.vX) / 2;
+            this.invisible = true;
         }
 
         ctx.drawImage(
@@ -1266,7 +1268,6 @@ window.Asteroids = (function() {
             playerRemoteTime = 0;
             mpEndTime = 0;
             if (multiplayer.shiptype === "smugglership") {
-                //console.log(multiplayer.shiptype);
                 player = new Player(new Vector(150, 200), spaceshipImage, 0);
                 playerRemote = new Player(new Vector(150, 400), spaceshipImage, 1);
             } else {
@@ -1331,7 +1332,6 @@ window.Asteroids = (function() {
             gameLoop();
             timer();
             render();
-            //console.log(player.acronym + ': start play');
         }
     };
 
@@ -1351,7 +1351,9 @@ window.Asteroids = (function() {
 
         // Draw asteroids
         for (var i = 0; i < asteroids.length; i += 1) {
-            asteroids[i].draw(context, canvasWidth, canvasHeight);
+            if (!asteroids[i].invisible) {
+                asteroids[i].draw(context, canvasWidth, canvasHeight);
+            }
         }
 
         // Explosions
@@ -1586,7 +1588,6 @@ window.Asteroids = (function() {
         } else {
             lastCommand = null;
         }
-        //console.log(lastCommand);
     };
 
     var receivePosition = function(position) {
@@ -1600,7 +1601,14 @@ window.Asteroids = (function() {
         while (asteroids.length < numAsteroids) {
             asteroids.push(new Asteroid(canvasWidth, canvasHeight, asteroidSprites[randomIntFromInterval(0, 1)]));
         }
-    }
+    };
+
+    // Make asteroids visible
+    var showAsteroids = function() {
+        for (var i = 0; i < asteroids.length; i += 1) {
+            asteroids[i].invisible = false;
+        }
+    };
 
     var gameLoop = function() {
         var now = Date.now();
@@ -1619,6 +1627,7 @@ window.Asteroids = (function() {
                 astUpdateCounter += 1;
             }
             if (multiplayer.isInitiator && astUpdateCounter === 0) {
+                showAsteroids();
                 increaseAsteroidCount();
                 multiplayer.sendDataChannelMessage({type: "setup_asteroids", asteroidsArray: asteroids, asteroidTick: lastGameTick});
             } else if (!multiplayer.isInitiator && astUpdateCounter === 0) {
@@ -1634,8 +1643,9 @@ window.Asteroids = (function() {
                             asteroids[i].radius = multiplayer.asteroidsArray[i].radius;
                             asteroids[i].ticksPerFrame = multiplayer.asteroidsArray[i].ticksPerFrame;
                             asteroids[i].position.y = multiplayer.asteroidsArray[i].position.y;
-                            asteroids[i].position.x = multiplayer.asteroidsArray[i].position.x - multiplayer.averageLatency * asteroids[i].speedfactor;
+                            asteroids[i].position.x = multiplayer.asteroidsArray[i].position.x - multiplayer.latencyResult;
                             asteroids[i].vX = multiplayer.asteroidsArray[i].vX;
+                            asteroids[i].invisible = multiplayer.asteroidsArray[i].invisible;
                         }
                     }
                     lastAsteroidTick = multiplayer.asteroidTick;
@@ -1644,6 +1654,7 @@ window.Asteroids = (function() {
                 }
             }
         } else {
+            showAsteroids();
             increaseAsteroidCount();
         }
 
@@ -1793,7 +1804,8 @@ window.Asteroids = (function() {
             explosions.push(new Explosion(canvasWidth, canvasHeight, explosionSprite, exp, randomIntFromInterval(0, 2), td));
             asteroids.splice(astIndex, 1);
             playerRemote = null;
-            soundAsteroidBlast.play(0, 0);
+            //soundAsteroidBlast.play(0, 0);
+            soundDeath.play(0, 0.55);
         }
 
         if (volumeHandler) {

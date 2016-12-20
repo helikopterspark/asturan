@@ -36,6 +36,7 @@ var multiplayer = {
     dataChannel: undefined,
     latencyTrips: [],
     averageLatency: 0,
+    latencyResult: 0,
     tickLag: 0,
 
 	start: function() {
@@ -438,8 +439,12 @@ var multiplayer = {
                 // Measure latency at least thrice
                 if (multiplayer.latencyTrips.length < 6) {
                     multiplayer.measureLatency();
+                } else {
+                    multiplayer.sendDataChannelMessage({type: "latency_result", latency: multiplayer.averageLatency});
                 }
                 break;
+            case "latency_result":
+                multiplayer.latencyResult = messageObject.latency;
             case "ready":
                 multiplayer.peerReady = true;
                 if(multiplayer.isInitiator && multiplayer.ready) {
