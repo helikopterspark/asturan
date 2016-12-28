@@ -9,7 +9,7 @@ window.RTCSessionDescription = window.RTCSessionDescription || window.mozRTCSess
 'use strict';
 var multiplayer = {
     // Open multiplayer game lobby
-    websocket_url:"ws://10.0.1.7:8079",
+    websocket_url:"ws://10.0.1.68:8079",
     //websocket_url:"ws://nodejs2.student.bth.se:8079",
     websocket:undefined,
 
@@ -309,35 +309,7 @@ var multiplayer = {
             multiplayer.closeAndExit();
         }
 	},
-    /*
-	sendCommand: function(commandObject) {
-		multiplayer.sentCommandForTick = true;
-		multiplayer.sendWebSocketMessage({type: "command", uids: uids, details: details, currentTick: multiplayer.currentTick});
-	},
-	tickLoop: function() {
-		var commands;
-		// if the commands for that tick have been received
-		// execute the commands and move on to the next tick
-		// otherwise wait for server to catch up
-		if (multiplayer.currentTick <= multiplayer.lastReceivedTick) {
-			commands = multiplayer.commands[multiplayer.currentTick];
-			if (commands) {
-				for (var i = 0; i < commands.length; i += 1) {
-					Asteroids.processCommand(commands[i].uids, commands[i].details);
-				}
-			}
-			Asteroids.gameLoop();
 
-			// In case no command was sent for this current tick, send an empty command to the server
-			// so that the server knows that everything is working smoothly.
-			if (!multiplayer.sentCommandForTick) {
-				multiplayer.sendCommand();
-			}
-			multiplayer.currentTick += 1;
-			multiplayer.sentCommandForTick = false;
-		}
-	},
-    */
 	// Tell the server that the player has lost
 	loseGame: function() {
     	multiplayer.sendWebSocketMessage({type: "lose_game", roomId: multiplayer.roomId});
@@ -406,6 +378,8 @@ var multiplayer = {
             multiplayer.sendDataChannelMessage({type:"handshake", message: 'Handshake message from ' + multiplayer.acronym, acronym: multiplayer.acronym});
             if (multiplayer.isInitiator) {
                 multiplayer.measureLatency();
+                multiplayer.finishMeasuringLatency();
+                multiplayer.sendDataChannelMessage({type: "latency_result", latency: multiplayer.averageLatency});
             }
             $("#connectingDataChannel").hide();
             Asteroids.initGame('MULTIPLAYER IS ON!<BR>EACH PLAYER PRESS SPACE WHEN READY');
@@ -444,7 +418,7 @@ var multiplayer = {
                 }
                 break;
             case "latency_result":
-                multiplayer.latencyResult = messageObject.latency;
+                multiplayer.averageLatency = messageObject.latency;
                 break;
             case "ready":
                 multiplayer.peerReady = true;

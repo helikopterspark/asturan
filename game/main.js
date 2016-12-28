@@ -1513,6 +1513,7 @@ window.Asteroids = (function() {
                     e.stopImmediatePropagation();
                     e.preventDefault();
                     mpComplete.hide();
+                    multiplayer.sendDataChannelMessage({type: "dc_chat", from: multiplayer.acronym, text: "Ready to play again!"});
                     multiplayer.initMPGameOnOpenDataChannel();
                 });
 
@@ -1637,20 +1638,18 @@ window.Asteroids = (function() {
                 while (asteroids.length > multiplayer.asteroidsArray.length) {
                     asteroids.splice(asteroids.length - 1, 1);
                 }
-                if (lastAsteroidTick <= multiplayer.asteroidTick) {
+                if (lastAsteroidTick <= multiplayer.asteroidTick) { // skip old unordered packages
                     for (var i = 0; i < asteroids.length; i += 1) {
                         if (multiplayer.asteroidsArray[i]) {
                             asteroids[i].radius = multiplayer.asteroidsArray[i].radius;
                             asteroids[i].ticksPerFrame = multiplayer.asteroidsArray[i].ticksPerFrame;
                             asteroids[i].position.y = multiplayer.asteroidsArray[i].position.y;
-                            asteroids[i].position.x = multiplayer.asteroidsArray[i].position.x - multiplayer.latencyResult;
+                            asteroids[i].position.x = multiplayer.asteroidsArray[i].position.x - (multiplayer.averageLatency * Math.round(Math.abs(multiplayer.asteroidsArray[i].vX)) / 2);
                             asteroids[i].vX = multiplayer.asteroidsArray[i].vX;
                             asteroids[i].invisible = multiplayer.asteroidsArray[i].invisible;
                         }
                     }
                     lastAsteroidTick = multiplayer.asteroidTick;
-                } else {
-                    console.log("Skip unordered package!");
                 }
             }
         } else {
@@ -1671,7 +1670,6 @@ window.Asteroids = (function() {
         // send commands and position to peer
         if (multiplayerGame && !player.lost) {
            if (Key.isDown(Key.RIGHT, Key.D)) {
-                //multiplayer.sentCommandForTick = true;
                 multiplayer.sendDataChannelMessage({type: "command", command: 'right', currentTick: lastGameTick, acronym: multiplayer.acronym});
             }
             if (updateCounter === 1) {
