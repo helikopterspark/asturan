@@ -1819,11 +1819,21 @@ window.Asteroids = (function() {
         'startGame': startGame,
         'resetGame': resetGame,
         'render': render,
-        'gameLoop': gameLoop,
+        'gameover': gameover,
         'closeMP': function() {multiplayerGame = false;},
-        'setPlayerRemoteLost': function(score, time) {if (playerRemote) {playerRemote.lost = true;} playerRemoteScore = score; playerRemoteTime = time;},
+        'setPlayerRemoteLost': function(score, time) {
+            if (playerRemote) {
+                playerRemote.lost = true;
+            }
+            playerRemoteScore = score;
+            playerRemoteTime = time;
+        },
         'setPlayerRemoteAcronym': function(acro) {remoteAcronym = acro;},
-        'setMessage': function(msg) {if (playerRemote) {message = new Message(playerRemote.acronym + " CRASHED AND BURNED!");}},
+        'setMessage': function() {
+            if (playerRemote) {
+                message = new Message(playerRemote.acronym + " CRASHED AND BURNED!");
+            }
+        },
         'receiveCommand': receiveCommand,
         'receivePosition': receivePosition,
     };

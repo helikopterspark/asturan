@@ -107,6 +107,7 @@ wsServer.on('request', function(request) {
 	        var roomId = player.room.roomId;
 			leaveRoom(player, roomId);
 	        sendRoomListToEveryone();
+            sendRoomWebSocketMessage(gameRooms[roomId - 1], {type: "peer_disconnect"});
 	    }
         sendChatMessage("has left", player.acronym);
 	});

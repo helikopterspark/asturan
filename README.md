@@ -7,7 +7,7 @@ The WebAudio API is used for sound and gives much improved performance over usin
 
 The multiplayer version requires a Node.js-server and browsers with support for WebSockets and WebRTC. The WebSockets server is used for signaling and the WebRTC data channel is used for peer-to-peer gaming.
 
-The multiplayer part is very much WIP. The game lobby and the WebRTC connection is working well. However, the sync is rudimentary and needs improvement. Lots of refactoring is needed to separate multiplayer code from singleplayer code, as this grew out of a singleplayer game.
+The multiplayer part is very much WIP. The game lobby and the WebRTC connection is working well. However, the sync is rudimentary and could probably be improved. Some refactoring is needed to separate multiplayer code from singleplayer code, as this grew out of a singleplayer game.
 
 Installation
 -----------

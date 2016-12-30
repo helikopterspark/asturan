@@ -196,7 +196,7 @@ img {
 			<li>Configure the server settings (full instructions in the README.md-file)</li>
 			<li>Start the Node server with <code>node server.js</code> to enable multiplayer.</li>
 		</ul>
-		<p>Your monitor resolution should preferably be 1200x800 pixels or larger. Turn up the volume and play in your favourite HTML5 capable browser!</p>
+		<p>Your monitor resolution should preferably be 1200x800 pixels or larger. Turn up the volume and play in your favourite HTML5 capable browser! Chrome v55 or higher is recommended for best performance.</p>
 		<p>&nbsp;</p>
 		<p>End transmission...&#9608;</p>
 	</div>
@@ -205,9 +205,6 @@ img {
 		<p>Written by Carl Ramsell. The code carries a MIT license. Please see the readme file in the <a class="simple_link" href="https://github.com/helikopterspark/asturan">github</a> repo for full credits.</p>
 		<p>Copyright &#9400; Carl Ramsell 2016</p>
 	</div>
-<!-- </div>
-<div id="img1Bkg"></div>
-<div id="screens1Bkg"></div> -->
 
 <script type="text/javascript" src="template/js/jquery.thelightboxgallery.js"></script>
 <script type="text/javascript">

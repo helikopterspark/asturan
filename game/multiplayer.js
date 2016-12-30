@@ -51,7 +51,6 @@ var multiplayer = {
         this.websocket.onerror = function() {
             console.log('Connection Error');
             $('#connectPara').html('No Connection');
-            //multiplayer.endGame("Error connecting to server.");
         };
         // Display multiplayer lobby screen after connecting
         this.websocket.onopen = function(){
@@ -128,6 +127,13 @@ var multiplayer = {
                     multiplayer.rtcPeerConn.addIceCandidate(new  RTCIceCandidate(rtc_message.candidate)).catch(multiplayer.onCreateSessionDescriptionError);
                 }
 
+                break;
+            case "peer_disconnect":
+                var abrt = "Peer disconnected! Aborting game!";
+                Asteroids.gameover();
+                console.log(abrt);
+                alert(abrt);
+                multiplayer.closeAndExit();
                 break;
             case "start_game":
                 multiplayer.startGame();
@@ -356,9 +362,16 @@ var multiplayer = {
             multiplayer.rtcPeerConn.ondatachannel = function (evt) {
                 multiplayer.dataChannel = evt.channel;
                 multiplayer.dataChannel.onopen = multiplayer.dataChannelStateChanged;
-                multiplayer.dataChannel.onclose = function() {console.log('Datachannel closed'); multiplayer.rtcPeerConn.close(); multiplayer.rtcPeerConn = null;};
             };
         }
+    },
+    onCloseDataChannel: function() {
+        console.log('Datachannel closed');
+        multiplayer.rtcPeerConn.close();
+        multiplayer.rtcPeerConn = null;
+    },
+    onDataChannelError: function(error) {
+        console.log("Data channel error " + error.toString());
     },
     onCreateSessionDescriptionError: function(error) {
         console.log(error.toString());
@@ -366,6 +379,8 @@ var multiplayer = {
     dataChannelStateChanged: function() {
         if (multiplayer.dataChannel.readyState === 'open') {
             multiplayer.dataChannel.onmessage = multiplayer.receiveDataChannelMessage;
+            multiplayer.dataChannel.onerror = multiplayer.onDataChannelError;
+            multiplayer.dataChannel.onclose = multiplayer.onCloseDataChannel;
             console.log("Success! Data channel open");
             multiplayer.initMPGameOnOpenDataChannel();
         } else {
@@ -389,10 +404,6 @@ var multiplayer = {
         }
     },
 
-    receiveDataChannel: function(event) {
-        multiplayer.dataChannel = event.channel;
-        multiplayer.dataChannel.onmessage = multiplayer.receiveDataChannelMessage;
-    },
     receiveDataChannelMessage: function(event) {
         // game commands here
         var messageObject = JSON.parse(event.data);
@@ -461,6 +472,7 @@ var multiplayer = {
     closeDataChannel: function() {
         if (multiplayer.dataChannel) {
             multiplayer.dataChannel.close();
+            multiplayer.dataChannel = null;
         }
     },
     updateWebRTCChatLog: function(from, text) {
