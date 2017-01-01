@@ -185,7 +185,9 @@ img {
 	<div id="infoText">
 		<p>The game is written in JavaScript and PHP to explore the possibilities of HTML5 and modern web technologies. It makes use of jQuery for manipulating DOM objects, HTML5 canvas for animated graphics and the WebAudio API for sound.</p>
 		<p>&nbsp;</p>
-		<p>The multiplayer part uses the WebRTC datachannel for peer-to-peer connection and Websockets for the game lobby and signaling between peers (requires a Node.js server).</p>
+		<p>The multiplayer part uses the WebRTC datachannel for peer-to-peer connection and Websockets for the game lobby and signaling between peers (requires a Node.js server). This is one of the few HTML5 games you will find online that uses WebRTC and its superior low latency peer-to-peer datachannel.</p>
+		<p>&nbsp;</p>
+		<p>Stay tuned for the next version with more obstacles, power-ups, shields and boss fights!</p>
 		<p>&nbsp;</p>
 		<p>You may download and install the game on your own web server:</p>
 		<ul id="installation">

@@ -18,7 +18,7 @@ Install all files in the www/ directory on your web server. Make sure to make th
 
 For multiplayer:
 
-Use ``npm install`` to install the dependency (theturtle32/WebSocket-Node).
+Use ``npm install`` to install the dependency ([theturtle32/WebSocket-Node](https://github.com/theturtle32/WebSocket-Node)).
 
 Set port number the server should listen to in ``server.js``.
 
@@ -28,12 +28,12 @@ If you want to restrict request origin, do so in the ``connectionIsAllowed()`` f
 
 Start the server with ``node server.js``.
 
-Google's STUN server is used as default for the signaling and can be used for demo purposes.
+Google's STUN server is used as default for the signaling and can be used for demo purposes. A web browser with WebRTC rupport is required for multiplayer. Tested with Chrome, Firefox and Opera.
 
 Credits
 -------
 
-Based on the game Asteroid Avoidance in the book Foundation HTML5 Canvas: For Games and Entertainment by Rob Hawkes.
+Based on the game Asteroid Avoidance in the book [Foundation HTML5 Canvas: For Games and Entertainment](http://www.apress.com/gp/book/9781430232919) by Rob Hawkes.
 
 Images:
 

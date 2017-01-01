@@ -1753,7 +1753,8 @@ window.Asteroids = (function() {
                 message = new Message("TRIPLE HIT +200");
 
                 soundBackground.volume.gain.value = 0.2;
-                soundPowerup.play(0, 0);
+                //soundPowerup.play(0, 0);
+                soundHiscore.play(0, 0);
                 volFade = setInterval(function() {
                     if (soundBackground.volume.gain.value < 0.7) {
                         soundBackground.volume.gain.value += 0.1;
